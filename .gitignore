@@ -1,0 +1,39 @@
+# Backups created by install.sh
+.dotfiles_backup/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+env/
+venv/
+
+# Ruby
+.bundle/
+vendor/bundle/
+
+# Temporary files
+tmp/
+.cache/
+
+# Secrets (never commit)
+.env
+.env.*
+.secrets
+secrets.*

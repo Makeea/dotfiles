@@ -2,12 +2,18 @@
 set -euo pipefail
 
 BACKUP_DIR="$HOME/backups"
+LOG_DIR="$BACKUP_DIR/logs"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 OUTFILE="$BACKUP_DIR/home-backup-$STAMP.tar.xz"
+LOGFILE="$LOG_DIR/home-backup-$STAMP.log"
 
-mkdir -p "$BACKUP_DIR"
+mkdir -p "$BACKUP_DIR" "$LOG_DIR"
 
-# Prompt for including ~/backups (default: exclude) with countdown
+exec > >(tee -a "$LOGFILE") 2>&1
+
+echo "Backup started: $(date)"
+
+# Prompt for including ~/backups (default: exclude)
 INCLUDE_BACKUPS="no"
 REPLY=""
 for i in {10..1}; do
@@ -93,3 +99,8 @@ xz -9e "$TAR_TMP"
 rm -f "$LIST_FILE" "$EXCLUDE_FILE"
 
 echo "Backup created: $OUTFILE"
+
+echo "Pruning old backups..."
+"$HOME/dotfiles/backups/prune.sh"
+
+echo "Backup finished: $(date)"

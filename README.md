@@ -40,6 +40,8 @@ dotfiles/
 │   ├── backup-configs.sh
 │   ├── backup-home.sh
 │   ├── cron-setup.sh
+│   ├── prune.sh
+│   └── restore.md
 │   └── README.md
 ├── git/
 │   ├── .gitconfig
@@ -91,7 +93,7 @@ WSL login banner script and documentation:
 
 ### backups/
 
-Backup scripts for configs and full home directory. See `backups/README.md` for details.
+Backup scripts for configs and full home directory, plus cron setup and restore docs. See `backups/README.md` for details.
 
 ---
 

@@ -2,10 +2,16 @@
 set -euo pipefail
 
 BACKUP_DIR="$HOME/backups"
+LOG_DIR="$BACKUP_DIR/logs"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 OUTFILE="$BACKUP_DIR/dotfiles-configs-$STAMP.tar.xz"
+LOGFILE="$LOG_DIR/dotfiles-configs-$STAMP.log"
 
-mkdir -p "$BACKUP_DIR"
+mkdir -p "$BACKUP_DIR" "$LOG_DIR"
+
+exec > >(tee -a "$LOGFILE") 2>&1
+
+echo "Backup started: $(date)"
 
 # Local config and dotfiles
 INCLUDES=(
@@ -97,3 +103,8 @@ xz -9e "$TAR_TMP"
 rm -f "$LIST_FILE" "$EXCLUDE_FILE"
 
 echo "Backup created: $OUTFILE"
+
+echo "Pruning old backups..."
+"$HOME/dotfiles/backups/prune.sh"
+
+echo "Backup finished: $(date)"

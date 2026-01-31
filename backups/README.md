@@ -1,6 +1,6 @@
 # Backups
 
-This folder contains two backup scripts. Both create compressed `.tar.xz` archives in `~/backups/` and include selected system files from `/etc`.
+This folder contains two backup scripts. Both create compressed `.tar.xz` archives in `~/backups/`, write per-run logs in `~/backups/logs/`, and include selected system files from `/etc`.
 It also includes a cron setup helper for scheduling backups.
 
 ## backup-configs.sh
@@ -37,6 +37,20 @@ Run:
 ```bash
 ~/dotfiles/backups/backup-home.sh
 ```
+
+## prune.sh
+
+Purpose: keeps only the most recent 10 backups for each backup type.
+
+Run:
+
+```bash
+~/dotfiles/backups/prune.sh
+```
+
+## restore.md
+
+Step-by-step guide for restoring backups and re-installing the cron schedule.
 
 ## cron-setup.sh
 

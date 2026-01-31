@@ -95,6 +95,18 @@ if [[ ! -s "$LIST_FILE" ]]; then
   exit 1
 fi
 
+# Estimate total size of included paths
+TOTAL_BYTES=0
+while IFS= read -r path; do
+  if SIZE_BYTES=$(du -sb "$path" 2>/dev/null | awk '{print $1}'); then
+    TOTAL_BYTES=$((TOTAL_BYTES + SIZE_BYTES))
+  fi
+done < "$LIST_FILE"
+
+TOTAL_MB=$(awk -v b="$TOTAL_BYTES" 'BEGIN {printf "%.2f", b/1024/1024}')
+TOTAL_GB=$(awk -v b="$TOTAL_BYTES" 'BEGIN {printf "%.2f", b/1024/1024/1024}')
+echo "Estimated size for configs backup: ${TOTAL_MB} MB (${TOTAL_GB} GB)"
+
 TAR_TMP="$BACKUP_DIR/dotfiles-configs-$STAMP.tar"
 
 tar --exclude-from="$EXCLUDE_FILE" -cf "$TAR_TMP" -T "$LIST_FILE"
@@ -103,8 +115,5 @@ xz -9e "$TAR_TMP"
 rm -f "$LIST_FILE" "$EXCLUDE_FILE"
 
 echo "Backup created: $OUTFILE"
-
-echo "Pruning old backups..."
-"$HOME/dotfiles/backups/prune.sh"
 
 echo "Backup finished: $(date)"

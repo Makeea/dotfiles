@@ -13,6 +13,12 @@ exec > >(tee -a "$LOGFILE") 2>&1
 
 echo "Backup started: $(date)"
 
+if HOME_BYTES=$(du -sb "$HOME" 2>/dev/null | awk '{print $1}'); then
+  HOME_MB=$(awk -v b="$HOME_BYTES" 'BEGIN {printf "%.2f", b/1024/1024}')
+  HOME_GB=$(awk -v b="$HOME_BYTES" 'BEGIN {printf "%.2f", b/1024/1024/1024}')
+  echo "Estimated size for $HOME: ${HOME_MB} MB (${HOME_GB} GB)"
+fi
+
 # Prompt for including ~/backups (default: exclude)
 INCLUDE_BACKUPS="no"
 REPLY=""
@@ -99,8 +105,5 @@ xz -9e "$TAR_TMP"
 rm -f "$LIST_FILE" "$EXCLUDE_FILE"
 
 echo "Backup created: $OUTFILE"
-
-echo "Pruning old backups..."
-"$HOME/dotfiles/backups/prune.sh"
 
 echo "Backup finished: $(date)"

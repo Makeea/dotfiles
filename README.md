@@ -76,7 +76,7 @@ Each module is documented in its folder:
 
 ---
 
-## Root scripts (not in a folder)
+## Scripts
 
 ### install.sh
 

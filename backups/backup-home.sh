@@ -7,11 +7,22 @@ OUTFILE="$BACKUP_DIR/home-backup-$STAMP.tar.xz"
 
 mkdir -p "$BACKUP_DIR"
 
-# Prompt for including ~/backups (default: exclude)
+# Prompt for including ~/backups (default: exclude) with countdown
 INCLUDE_BACKUPS="no"
-read -r -t 10 -p "Include ~/backups in the archive? (y/N): " REPLY || true
+REPLY=""
+for i in {10..1}; do
+  echo -ne "Include ~/backups in the archive? (y/N) ${i}s \r"
+  if read -r -t 1 -n 1 key; then
+    REPLY="$key"
+    echo
+    break
+  fi
+done
+if [[ -z "$REPLY" ]]; then
+  echo
+fi
 case "${REPLY:-}" in
-  y|Y|yes|YES)
+  y|Y)
     INCLUDE_BACKUPS="yes"
     ;;
 esac

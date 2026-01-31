@@ -1,0 +1,31 @@
+# Public-safe Git configuration
+# Personal identity goes in ~/.gitconfig.local
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = nano
+	autocrlf = input
+	pager = less -FRSX
+
+[pull]
+	rebase = true
+
+[push]
+	default = simple
+
+[fetch]
+	prune = true
+
+[color]
+	ui = auto
+
+[diff]
+	algorithm = histogram
+
+[rerere]
+	enabled = true
+
+[include]
+	path = ~/.gitconfig.local

@@ -39,6 +39,7 @@ dotfiles/
 ├── backups/
 │   ├── backup-configs.sh
 │   ├── backup-home.sh
+│   ├── cron-setup.sh
 │   └── README.md
 ├── git/
 │   ├── .gitconfig

@@ -1,6 +1,7 @@
 # Backups
 
 This folder contains two backup scripts. Both create compressed `.tar.xz` archives in `~/backups/` and include selected system files from `/etc`.
+It also includes a cron setup helper for scheduling backups.
 
 ## backup-configs.sh
 
@@ -35,4 +36,18 @@ Run:
 
 ```bash
 ~/dotfiles/backups/backup-home.sh
+```
+
+## cron-setup.sh
+
+Purpose: installs cron jobs to run the backups on a schedule.
+
+Defaults:
+- Weekly (Sunday at 02:00) runs `backup-configs.sh`
+- Monthly (1st at 03:00) runs `backup-home.sh`
+
+Run:
+
+```bash
+~/dotfiles/backups/cron-setup.sh
 ```

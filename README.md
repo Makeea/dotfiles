@@ -21,6 +21,7 @@ git clone https://github.com/makeea/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 chmod +x install.sh
 ./install.sh
+```
 
 Restart your shell or reload the configuration:
 
@@ -35,8 +36,15 @@ will be available in the shell.
 dotfiles/
 ├── bash/
 │   └── aliases.sh
+├── git/
+│   ├── .gitconfig
+│   ├── install.sh
+│   └── README.md
 ├── bootstrap.sh
 ├── README.md
+├── wsl/
+│   ├── readme.md
+│   └── wsl-banner.sh
 └── LICENSE
 ```
 
@@ -64,6 +72,18 @@ A safe bootstrap script that:
 
 Currently, the script performs detection only and makes no system changes. It is intended to be extended over time.
 
+### git/
+
+Public-safe Git configuration plus an installer script:
+- `git/README.md` documents the setup
+- `git/install.sh` symlinks `~/.gitconfig` and creates `~/.gitconfig.local` if missing
+
+### wsl/
+
+WSL login banner script and documentation:
+- `wsl/wsl-banner.sh` prints system info on interactive WSL shells
+- `wsl/readme.md` explains installation and intended usage
+
 ---
 
 ## Installation
@@ -87,6 +107,22 @@ git clone https://github.com/makeea/dotfiles.git ~/dotfiles
 
 ```bash
 ln -s ~/dotfiles/bash/aliases.sh ~/.bash_aliases
+```
+
+### Optional: Install Git config
+
+```bash
+~/dotfiles/git/install.sh
+```
+
+### Optional: Enable WSL login banner
+
+Add this to the bottom of `~/.bashrc` in WSL:
+
+```bash
+if [[ -n "$WSL_DISTRO_NAME" && -f ~/dotfiles/wsl/wsl-banner.sh ]]; then
+  source ~/dotfiles/wsl/wsl-banner.sh
+fi
 ```
 
 

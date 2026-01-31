@@ -36,6 +36,7 @@ will be available in the shell.
 dotfiles/
 ├── bash/
 │   └── aliases.sh
+├── backup.sh
 ├── git/
 │   ├── .gitconfig
 │   ├── install.sh
@@ -84,6 +85,10 @@ WSL login banner script and documentation:
 - `wsl/wsl-banner.sh` prints system info on interactive WSL shells
 - `wsl/readme.md` explains installation and intended usage
 
+### backup.sh
+
+Creates a timestamped `.tar.xz` backup of common dotfiles and config folders into `~/backups/`. It skips common cache and temp directories.
+
 ---
 
 ## Installation
@@ -123,6 +128,12 @@ Add this to the bottom of `~/.bashrc` in WSL:
 if [[ -n "$WSL_DISTRO_NAME" && -f ~/dotfiles/wsl/wsl-banner.sh ]]; then
   source ~/dotfiles/wsl/wsl-banner.sh
 fi
+```
+
+### Optional: Run a full backup
+
+```bash
+~/dotfiles/backup.sh
 ```
 
 

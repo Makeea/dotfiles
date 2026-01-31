@@ -12,6 +12,23 @@ The setup is designed to be:
 
 ---
 
+## Quick start
+
+Clone the repository and run the installer:
+
+```bash
+git clone https://github.com/makeea/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+chmod +x install.sh
+./install.sh
+
+Restart your shell or reload the configuration:
+
+```bash
+source ~/.bashrc
+```
+After this, all aliases and functions provided by the dotfiles
+will be available in the shell.
 ## Repository structure
 
 ```
@@ -71,6 +88,8 @@ git clone https://github.com/makeea/dotfiles.git ~/dotfiles
 ```bash
 ln -s ~/dotfiles/bash/aliases.sh ~/.bash_aliases
 ```
+
+
 
 ### Ensure `.bashrc` loads aliases (Ubuntu default)
 

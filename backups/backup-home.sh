@@ -3,40 +3,31 @@ set -euo pipefail
 
 BACKUP_DIR="$HOME/backups"
 STAMP="$(date +%Y%m%d-%H%M%S)"
-OUTFILE="$BACKUP_DIR/dotfiles-backup-$STAMP.tar.xz"
+OUTFILE="$BACKUP_DIR/home-backup-$STAMP.tar.xz"
 
 mkdir -p "$BACKUP_DIR"
 
-# Build include list (only local Linux/WSL home paths)
+# Prompt for including ~/backups (default: exclude)
+INCLUDE_BACKUPS="no"
+read -r -t 10 -p "Include ~/backups in the archive? (y/N): " REPLY || true
+case "${REPLY:-}" in
+  y|Y|yes|YES)
+    INCLUDE_BACKUPS="yes"
+    ;;
+esac
+
+# Full home directory
 INCLUDES=(
-  "$HOME/dotfiles"
-  "$HOME/.bashrc"
-  "$HOME/.bash_profile"
-  "$HOME/.profile"
-  "$HOME/.bash_aliases"
-  "$HOME/.zshrc"
-  "$HOME/.zprofile"
-  "$HOME/.ssh"
-  "$HOME/.gnupg"
-  "$HOME/.gitconfig"
-  "$HOME/.gitconfig.local"
-  "$HOME/.git-credentials"
-  "$HOME/.vimrc"
-  "$HOME/.vim"
-  "$HOME/.tmux.conf"
-  "$HOME/.config/Code/User"
-  "$HOME/.vscode"
-  "$HOME/.config/nvim"
-  "$HOME/.config/kitty"
-  "$HOME/.config/alacritty"
-  "$HOME/.config/pip"
-  "$HOME/.config/yarn"
-  "$HOME/.npmrc"
-  "$HOME/.cargo/config.toml"
-  "$HOME/.config/gcloud"
-  "$HOME/.aws"
-  "$HOME/.azure"
-  "$HOME/.kube"
+  "$HOME"
+)
+
+# Selected system configs
+SYSTEM_INCLUDES=(
+  "/etc/hosts"
+  "/etc/fstab"
+  "/etc/wsl.conf"
+  "/etc/ssh/ssh_config"
+  "/etc/ssh/sshd_config"
 )
 
 # Exclusions: caches, temp, and bulky package stores
@@ -52,11 +43,20 @@ EXCLUDES=(
   "$HOME/.config/Code/CachedExtensions"
 )
 
-# Create temp files listing only existing paths
+if [[ "$INCLUDE_BACKUPS" != "yes" ]]; then
+  EXCLUDES+=("$HOME/backups")
+fi
+
 LIST_FILE="$(mktemp)"
 EXCLUDE_FILE="$(mktemp)"
 
 for path in "${INCLUDES[@]}"; do
+  if [[ -e "$path" ]]; then
+    printf '%s\n' "$path" >> "$LIST_FILE"
+  fi
+done
+
+for path in "${SYSTEM_INCLUDES[@]}"; do
   if [[ -e "$path" ]]; then
     printf '%s\n' "$path" >> "$LIST_FILE"
   fi
@@ -74,8 +74,7 @@ if [[ ! -s "$LIST_FILE" ]]; then
   exit 1
 fi
 
-# Create tar then compress with xz at max compression
-TAR_TMP="$BACKUP_DIR/dotfiles-backup-$STAMP.tar"
+TAR_TMP="$BACKUP_DIR/home-backup-$STAMP.tar"
 
 tar --exclude-from="$EXCLUDE_FILE" -cf "$TAR_TMP" -T "$LIST_FILE"
 xz -9e "$TAR_TMP"

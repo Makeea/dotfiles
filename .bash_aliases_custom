@@ -1,0 +1,74 @@
+##########
+# GENERAL
+##########
+alias ll='ls -alF'
+alias la='ls -A'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias home='cd ~'
+alias projects='cd ~/projects'
+
+##########
+# GIT
+##########
+alias gs='git status'
+alias ga='git add .'
+alias gc='git commit -m'
+alias gp='git push'
+alias gpl='git pull'
+alias gl='git log --oneline --graph --decorate'
+alias gb='git branch'
+alias gco='git checkout'
+alias gcl='git clone'
+
+##########
+# GITHUB / SSH
+##########
+alias gh-test='ssh -T git@github.com'
+alias sshl='ssh-add -l'
+
+##########
+# JEKYLL
+##########
+alias jserve='bundle exec jekyll serve --livereload --force_polling'
+alias jbuild='bundle exec jekyll build'
+alias jnew='jekyll new . --force'
+
+##########
+# WEB SERVERS
+##########
+alias pyserve='python3 -m http.server 8080'
+alias pyserve9='python3 -m http.server 9000'
+alias nodeserve='npx serve'
+
+##########
+# NODE / NVM
+##########
+alias nls='nvm ls'
+alias nuse='nvm use'
+alias ninstall='nvm install'
+alias npm-clean='rm -rf node_modules package-lock.json'
+
+##########
+# PYTHON
+##########
+alias venv='python3 -m venv .venv'
+alias vact='source .venv/bin/activate'
+alias vdeact='deactivate'
+
+##########
+# RUBY / RBENV
+##########
+alias rls='rbenv versions'
+alias ruse='rbenv global'
+alias rrehash='rbenv rehash'
+
+##########
+# WSL / SYSTEM
+##########
+alias reload='source ~/.bashrc'
+alias ports='ss -tulpn'
+alias disk='df -h'
+alias mem='free -h'
+
+# alias shortname='long command'

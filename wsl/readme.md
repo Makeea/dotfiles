@@ -47,7 +47,7 @@ It is **not** intended for:
 Recommended location:
 
 ```bash
-~/dotfiles/wsl/.wsl-banner.sh
+~/dotfiles/wsl/wsl-banner.sh
 ```
 
 ### 2. Source it from ~/.bashrc
@@ -55,7 +55,7 @@ Recommended location:
 Add the following to the bottom of `~/.bashrc`:
 
 ```bash
-if [[ -n "$WSL_DISTRO_NAME" && -f ~/dotfiles/wsl/.wsl-banner.sh ]]; then
-  source ~/dotfiles/wsl/.wsl-banner.sh
+if [[ -n "$WSL_DISTRO_NAME" && -f ~/dotfiles/wsl/wsl-banner.sh ]]; then
+  source ~/dotfiles/wsl/wsl-banner.sh
 fi
 ```

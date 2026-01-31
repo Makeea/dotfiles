@@ -1,14 +1,28 @@
 # dotfiles
 
-Personal dotfiles for a Linux / WSL development environment.
+Personal dotfiles and helper scripts for a Linux / WSL development environment.
 
-This repository contains shell configuration and aliases used to set up a consistent, repeatable development workflow across machines.
+This repo is public-friendly (no personal identity baked in) and is intended for:
+- People who want to mirror this setup on their own machine
+- Contributors who want to extend the scripts or add new modules
 
 The setup is designed to be:
 - Safe to run multiple times
 - Portable across WSL, native Linux, and macOS
 - Explicit and easy to audit
 - Version controlled
+
+---
+
+## What this repo does
+
+At the top level you get:
+- A repeatable install flow (`install.sh`)
+- An environment check (`bootstrap.sh`)
+- A curated Bash aliases file (`bash/aliases.sh`)
+- Optional modules for Git config, WSL banner, and backups (see per-folder READMEs)
+
+If you are just here to use it, the install steps below are enough. If you want details or to contribute, each folder has its own README.
 
 ---
 
@@ -23,13 +37,64 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Restart your shell or reload the configuration:
+Reload your shell so aliases take effect:
 
 ```bash
 source ~/.bashrc
 ```
-After this, all aliases and functions provided by the dotfiles
-will be available in the shell.
+
+---
+
+## Install overview
+
+### 1) Get the repo
+
+```bash
+git clone https://github.com/makeea/dotfiles.git ~/dotfiles
+```
+
+Or download a ZIP and extract to `~/dotfiles`.
+
+### 2) Run the installer
+
+```bash
+cd ~/dotfiles
+./install.sh
+```
+
+What it does:
+- Symlinks `bash/aliases.sh` to `~/.bash_aliases`
+- Ensures `~/.bashrc` sources `~/.bash_aliases`
+- Prints OS/WSL info and exits safely on repeat runs
+
+### 3) Optional components
+
+Each module is documented in its folder:
+- `git/README.md` for Git config and `git/install.sh`
+- `wsl/readme.md` for the WSL login banner
+- `backups/README.md` for backup scripts and cron helper
+
+---
+
+## Root scripts (not in a folder)
+
+### install.sh
+
+Installs the core shell aliases by symlinking:
+- `bash/aliases.sh` -> `~/.bash_aliases`
+
+It also appends a small block to `~/.bashrc` if needed so aliases load automatically.
+
+### bootstrap.sh
+
+Detects the current OS and whether the shell is running under WSL. It prints the environment and exits without making changes. Use this to sanity-check detection logic:
+
+```bash
+./bootstrap.sh
+```
+
+---
+
 ## Repository structure
 
 ```
@@ -41,149 +106,23 @@ dotfiles/
 │   ├── backup-home.sh
 │   ├── cron-setup.sh
 │   ├── prune.sh
-│   └── restore.md
+│   ├── restore.md
 │   └── README.md
 ├── git/
 │   ├── .gitconfig
 │   ├── install.sh
 │   └── README.md
-├── bootstrap.sh
-├── README.md
 ├── wsl/
 │   ├── readme.md
 │   └── wsl-banner.sh
+├── bootstrap.sh
+├── install.sh
+├── README.md
 └── LICENSE
 ```
 
 ---
 
-## Contents
+## Contributing
 
-### bash/aliases.sh
-
-Contains all shell aliases and functions, including:
-- Navigation shortcuts
-- Git and GitHub helpers
-- Jekyll commands
-- Python and Node static web servers
-- A smart `serve` function that auto-detects project type
-
-This file is intended to be symlinked to `~/.bash_aliases`.
-
-### bootstrap.sh
-
-A safe bootstrap script that:
-- Detects operating system (Linux vs macOS)
-- Detects WSL vs native Linux
-- Prints environment information
-
-Currently, the script performs detection only and makes no system changes. It is intended to be extended over time.
-
-### git/
-
-Public-safe Git configuration plus an installer script:
-- `git/README.md` documents the setup
-- `git/install.sh` symlinks `~/.gitconfig` and creates `~/.gitconfig.local` if missing
-
-### wsl/
-
-WSL login banner script and documentation:
-- `wsl/wsl-banner.sh` prints system info on interactive WSL shells
-- `wsl/readme.md` explains installation and intended usage
-
-### backups/
-
-Backup scripts for configs and full home directory, plus cron setup and restore docs. See `backups/README.md` for details.
-
----
-
-## Installation
-
-### Option 1: Clone with Git (recommended)
-
-```bash
-git clone https://github.com/makeea/dotfiles.git ~/dotfiles
-```
-
-### Option 2: Download ZIP
-
-- Click **Code → Download ZIP** on GitHub
-- Extract the folder to `~/dotfiles`
-
----
-
-## Setup
-
-### Create the aliases symlink
-
-```bash
-ln -s ~/dotfiles/bash/aliases.sh ~/.bash_aliases
-```
-
-### Optional: Install Git config
-
-```bash
-~/dotfiles/git/install.sh
-```
-
-### Optional: Enable WSL login banner
-
-Add this to the bottom of `~/.bashrc` in WSL:
-
-```bash
-if [[ -n "$WSL_DISTRO_NAME" && -f ~/dotfiles/wsl/wsl-banner.sh ]]; then
-  source ~/dotfiles/wsl/wsl-banner.sh
-fi
-```
-
-### Optional: Run a backup
-
-```bash
-~/dotfiles/backups/backup-configs.sh
-```
-
-
-
-### Ensure `.bashrc` loads aliases (Ubuntu default)
-
-Add the following to `~/.bashrc` if it is not already present:
-
-```bash
-if [ -f ~/.bash_aliases ]; then
-  source ~/.bash_aliases
-fi
-```
-
-Reload the shell:
-
-```bash
-source ~/.bashrc
-```
-
----
-
-## Bootstrap
-
-Run the bootstrap script to verify OS and environment detection:
-
-```bash
-cd ~/dotfiles
-chmod +x bootstrap.sh
-./bootstrap.sh
-```
-
-Example output on WSL:
-
-```
-Operating system: Linux
-WSL detected: true
-Environment: Linux (WSL)
-```
-
-Example output on native Linux:
-
-```
-Operating system: Linux
-WSL detected: false
-Environment: Linux (native)
-```
+Issues and PRs are welcome. Please keep new scripts small, explicit, and safe to re-run. If you add a new module, include a README in that folder and link it here.
